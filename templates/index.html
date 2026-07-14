@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver License Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        input[type="text"],
+        input[type="date"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="file"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-reset {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-reset:hover {
+            background: #e0e0e0;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert-error {
+            background: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+        
+        .alert-success {
+            background: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #ddd;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .info-text {
+            font-size: 13px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Driver License Generator</h1>
+        <p class="subtitle">မောင်းနှင်ခွင့်ပြunlock ဖန်တီးပါ - Create Your Driver License Online</p>
+        
+        <div id="alert" class="alert"></div>
+        
+        <form id="licenseForm" enctype="multipart/form-data">
+            <!-- Name Section -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name *</label>
+                    <input type="text" id="firstName" name="first_name" required 
+                           placeholder="အမည်" value="John">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name *</label>
+                    <input type="text" id="lastName" name="last_name" required 
+                           placeholder="မျိုးရည်" value="Doe">
+                </div>
+            </div>
+            
+            <!-- License Number -->
+            <div class="form-group">
+                <label for="licenseNumber">License Number</label>
+                <input type="text" id="licenseNumber" name="license_number" 
+                       placeholder="License number (auto-generated if empty)">
+                <p class="info-text">အလွတ်ထားလျှင် အလိုအလျောက် ဖန်တီးပေးပါတယ်</p>
+            </div>
+            
+            <!-- Date of Birth & Gender -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dob">Date of Birth *</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender *</label>
+                    <select id="gender" name="gender" required>
+                        <option value="M">Male (ယောက်ျား)</option>
+                        <option value="F">Female (မိန်းမ)</option>
+                        <option value="O">Other (အခြား)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Address -->
+            <div class="form-group">
+                <label for="address">Address *</label>
+                <input type="text" id="address" name="address" required 
+                       placeholder="မြန်မာ (Myanmar)" value="Myanmar">
+            </div>
+            
+            <!-- State/Province -->
+            <div class="form-group">
+                <label for="state">State/Province</label>
+                <input type="text" id="state" name="state" 
+                       placeholder="အပြည်ပြည်ဆိုင်ရာ" value="Myanmar">
+            </div>
+            
+            <!-- Photo Upload -->
+            <div class="form-group">
+                <label for="photo">Photo (Your Picture) *</label>
+                <input type="file" id="photo" name="photo" accept="image/*" required>
+                <p class="info-text">PNG, JPG, GIF - Max 16MB</p>
+            </div>
+            
+            <!-- Buttons -->
+            <div class="button-group">
+                <button type="submit" class="btn-generate">
+                    ✓ Generate License
+                </button>
+                <button type="reset" class="btn-reset">
+                    ↻ Clear Form
+                </button>
+            </div>
+            
+            <div class="loading" id="loading">
+                <span class="spinner"></span>
+                Processing... အကျ့ုံကြီး...
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        const form = document.getElementById('licenseForm');
+        const alertDiv = document.getElementById('alert');
+        const loading = document.getElementById('loading');
+        
+        // Set default date (18 years ago)
+        const today = new Date();
+        const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+        document.getElementById('dob').valueAsDate = eighteenYearsAgo;
+        
+        function showAlert(message, type) {
+            alertDiv.textContent = message;
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    alertDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Validate form
+            if (!form.checkValidity()) {
+                showAlert('Please fill in all required fields!', 'error');
+                return;
+            }
+            
+            const formData = new FormData(form);
+            
+            loading.style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/generate-license', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `license_${form.license_number.value || 'generated'}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                    
+                    showAlert('✓ License generated successfully! Download started.', 'success');
+                } else {
+                    const errorData = await response.json();
+                    showAlert('Error: ' + (errorData.error || 'Failed to generate license'), 'error');
+                }
+            } catch (error) {
+                showAlert('Error: ' + error.message, 'error');
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
